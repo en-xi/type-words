@@ -33,10 +33,9 @@ db.version(2).stores({
 });
 
 let run = () => {
-  words.forEach((item) => {
+  (words as Word[]).forEach((item) => {
     db.words.add({
       ...item,
-      name: item.word,
     });
   });
 };
