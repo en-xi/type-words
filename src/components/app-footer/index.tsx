@@ -9,7 +9,7 @@ interface IProps {
 const AppFooter: FC<IProps> = () => {
   return (
     <FooterWrapper className="flex-center">
-      <a href="https://github.com/en-xi/keyboard-words" target="_blank">
+      <a href="https://github.com/en-xi/type-words" target="_blank">
         <GithubOutlined />
       </a>
     </FooterWrapper>

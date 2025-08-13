@@ -1,5 +1,4 @@
 import { Dexie, type EntityTable } from "dexie";
-import words from "../assets/data/words.json";
 
 // Typing for your entities (hint is to move this to its own module)
 export interface Word {
@@ -32,19 +31,28 @@ db.version(2).stores({
   words: "id, level, is_3000, [level+is_3000]", // Add compound index
 });
 
-let run = () => {
+let init = async () => {
+  console.log("initDatabase()");
+  let { default: words } = await import("@/assets/data/words.json");
   (words as Word[]).forEach((item) => {
+    console.log("foreach()");
     db.words.add({
       ...item,
     });
   });
 };
 
-run();
+// Fix: Use async count() method instead of .length
+const initializeDatabase = async () => {
+  const count = await db.words.count();
+  if (count === 0) {
+    await init();
+  }
+};
 
-let selectAll = () => db.words.toArray();
+// Call the initialization function
+initializeDatabase();
 
-let selectA1 = () => db.words.where("level").equals("A1").toArray();
 let select = async (
   levels: string[],
   page: number,
@@ -84,4 +92,4 @@ let select = async (
 
 export default db;
 
-export { select, selectA1, selectAll };
+export { select };

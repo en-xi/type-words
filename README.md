@@ -1,50 +1,11 @@
-# React + TypeScript + Vite
+People can remember words on the site by using muscle memory formed by repeatedly typing English words on a keyboard.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Some people will type faster than English when typing in their native language, because many years of native language input has trained a very strong muscle memory, while English input muscle memory is relatively weak, prone to "pick up the pen and forget the word" phenomenon, through repeated practice on this website can solve this problem.
 
-Currently, two official plugins are available:
+The six levels are grouped into three broad categories:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+A1-A2 (Basic User): Can understand and use basic phrases and expressions, can communicate in simple situations.
 
-## Expanding the ESLint configuration
+B1-B2 (Independent User): Can understand the main points of clear standard input on familiar matters regularly encountered in work, school, leisure, etc., can deal with most situations likely to arise whilst traveling in an area where the language is spoken, can produce simple connected text on topics that are familiar or of personal interest.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+C1-C2 (Proficient User): Can understand a wide range of demanding, longer texts, and recognize implicit meaning, can express him/herself fluently and spontaneously without much obvious searching for expressions, can use language flexibly and effectively for social, academic and professional purposes.

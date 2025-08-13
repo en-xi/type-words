@@ -79,14 +79,8 @@ function Type() {
     setIsSettingShow(checked);
   }
 
-  function play(src?: string, word?: Word) {
-    console.log(src, word, isUKPron);
-    let src2 = "";
-    if (src) src2 = src;
-    if (word) src2 = isUKPron ? word.audio_uk : word.audio_us;
-
-    console.log("src: ", src2);
-    audioRef.current!.src = src2;
+  function play(word: Word) {
+    audioRef.current!.src = isUKPron ? word.audio_uk : word.audio_us;
     audioRef.current!.play();
   }
 

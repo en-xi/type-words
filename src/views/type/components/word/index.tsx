@@ -40,7 +40,6 @@ const Word: FC<IProps> = ({ words, nextPage, play, isUKPron }) => {
 
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
-      console.log(e.key);
       setTypedString((prev) => prev + e.key);
     }
 
@@ -52,7 +51,7 @@ const Word: FC<IProps> = ({ words, nextPage, play, isUKPron }) => {
 
   function handleTypedString() {
     if (!word!.name.startsWith(typedString)) {
-      play("", word);
+      play(word);
       setTypedString("");
       return;
     }
@@ -66,7 +65,7 @@ const Word: FC<IProps> = ({ words, nextPage, play, isUKPron }) => {
   }
 
   function resetWord(word: Word) {
-    play("", word);
+    play(word);
     setWord(word);
     setTypedString("");
   }

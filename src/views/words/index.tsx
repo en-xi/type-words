@@ -42,11 +42,9 @@ function Words() {
 
   useEffect(() => {
     select(levels, page, pageSize, is3000);
-    console.log("mount");
   }, []);
 
   function paginationOnChange(page: number, pageSize: number) {
-    console.log(page, pageSize);
     select(levels, page, pageSize, is3000);
     setPage(page);
     setPageSize(pageSize);
@@ -68,7 +66,6 @@ function Words() {
   }
 
   function play(src: string) {
-    console.log("src: ", src);
     audioRef.current!.src = src;
     audioRef.current!.play();
   }
