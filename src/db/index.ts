@@ -1,3 +1,4 @@
+import words from "@/assets/data/words.json";
 import { Dexie, type EntityTable } from "dexie";
 
 // Typing for your entities (hint is to move this to its own module)
@@ -33,7 +34,7 @@ db.version(2).stores({
 
 let init = async () => {
   console.log("initDatabase()");
-  let { default: words } = await import("@/assets/data/words.json");
+  // let { default: words } = await import("@/assets/data/words.json");
   (words as Word[]).forEach((item) => {
     console.log("foreach()");
     db.words.add({
