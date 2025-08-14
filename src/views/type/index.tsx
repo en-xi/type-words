@@ -212,6 +212,7 @@ function Type() {
         closable={{ "aria-label": "Custom Close Button" }}
         open={isModalOpen}
         footer={null}
+        onCancel={() => setIsModalOpen(false)}
       >
         <div className="modal">
           <div>
