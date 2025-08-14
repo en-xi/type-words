@@ -32,6 +32,7 @@ const Word: FC<IProps> = ({ words, nextPage, play, isUKPron }) => {
       wordIndex = 0;
       resetWord(words[0]);
       setIsLoading(false);
+      setIsNextPage(false);
     }
   }, [words]);
 
@@ -76,11 +77,6 @@ const Word: FC<IProps> = ({ words, nextPage, play, isUKPron }) => {
     setTypedString("");
   }
 
-  function enterNextPage() {
-    setIsNextPage(false);
-    nextPage();
-  }
-
   if (isLoading) {
     return (
       <Spin tip="loading...">
@@ -90,7 +86,7 @@ const Word: FC<IProps> = ({ words, nextPage, play, isUKPron }) => {
   }
 
   if (isNextPage) {
-    return <Button onClick={enterNextPage}>enter next page</Button>;
+    return <Button onClick={nextPage}>enter next page</Button>;
   }
 
   return (
