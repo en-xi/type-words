@@ -8,6 +8,7 @@ import {
   type FC,
   type ReactNode,
 } from "react";
+import { getLocalStorageItem, setLocalStorageItem } from "../..";
 import { WordWrap } from "./style";
 
 interface IProps {
@@ -18,19 +19,27 @@ interface IProps {
   isUKPron: boolean;
 }
 
-let wordIndex = 0;
 let regex = /[a-zA-Z]{1}/;
 
 const Word: FC<IProps> = ({ words, nextPage, play, isUKPron }) => {
-  const [word, setWord] = useState<Word>();
+  const [word, setWord] = useState<Word>(() =>
+    getLocalStorageItem("word-word", null)
+  );
+  const [wordIndex, setWordIndex] = useState(() =>
+    getLocalStorageItem("word-wordIndex", 0)
+  );
   const [typedString, setTypedString] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isNextPage, setIsNextPage] = useState(false);
 
   useEffect(() => {
     if (words.length !== 0) {
-      wordIndex = 0;
-      resetWord(words[0]);
+      // if word is null(first load page) or word is not included in the words(modify query condition), reset word
+      if (!word || !words.some((w) => w.name === word.name)) {
+        setWordIndex(0);
+        resetWord(words[0]);
+      }
+
       setIsLoading(false);
       setIsNextPage(false);
     }
@@ -56,6 +65,11 @@ const Word: FC<IProps> = ({ words, nextPage, play, isUKPron }) => {
     };
   }, []);
 
+  useEffect(() => {
+    setLocalStorageItem("word-word", word);
+    setLocalStorageItem("word-wordIndex", wordIndex);
+  }, [word]);
+
   function handleTypedString() {
     if (!word!.name.startsWith(typedString)) {
       play(word);
@@ -64,7 +78,9 @@ const Word: FC<IProps> = ({ words, nextPage, play, isUKPron }) => {
     }
     if (word?.name.length === typedString.length) {
       if (wordIndex < words.length - 1) {
-        resetWord(words[++wordIndex]);
+        let newWordIndex = wordIndex + 1;
+        setWordIndex(newWordIndex);
+        resetWord(words[newWordIndex]);
       } else {
         setIsNextPage(true);
       }

@@ -17,29 +17,93 @@ const options: SelectProps["options"] = [
   { label: "C1", value: "C1" },
 ];
 
+// Helper functions for localStorage
+export const getLocalStorageItem = (key: string, defaultValue: any) => {
+  try {
+    const item = localStorage.getItem(key);
+    return item ? JSON.parse(item) : defaultValue;
+  } catch (error) {
+    console.error(`Error reading localStorage key "${key}":`, error);
+    return defaultValue;
+  }
+};
+
+export const setLocalStorageItem = (key: string, value: any) => {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (error) {
+    console.error(`Error setting localStorage key "${key}":`, error);
+  }
+};
+
 function Type() {
   let { words, select, total } = useWordStore();
-  const [levels, setLevels] = useState<string[]>(["A1", "A2"]);
-  const [page, setPage] = useState<number>(1);
-  const [pageSize, setPageSize] = useState<number>(20);
-  const [is3000, setIs3000] = useState(1);
-  const [disabled, setDisabled] = useState(true);
+
+  // Initialize states from localStorage with fallback defaults
+  const [levels, setLevels] = useState<string[]>(() =>
+    getLocalStorageItem("type-levels", ["A1", "A2"])
+  );
+  const [page, setPage] = useState<number>(() =>
+    getLocalStorageItem("type-page", 1)
+  );
+  const [pageSize, setPageSize] = useState<number>(() =>
+    getLocalStorageItem("type-pageSize", 20)
+  );
+  const [is3000, setIs3000] = useState(() =>
+    getLocalStorageItem("type-is3000", 1)
+  );
+  const [disabled, setDisabled] = useState(() =>
+    getLocalStorageItem("type-disabled", true)
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isSettingShow, setIsSettingShow] = useState(true);
-  const [isUKPron, setIsUKPron] = useState(true);
+  const [isSettingShow, setIsSettingShow] = useState(() =>
+    getLocalStorageItem("type-isSettingShow", true)
+  );
+  const [isUKPron, setIsUKPron] = useState(() =>
+    getLocalStorageItem("type-isUKPron", true)
+  );
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
+  // Save states to localStorage whenever they change
+  useEffect(() => {
+    setLocalStorageItem("type-levels", levels);
+  }, [levels]);
+
+  useEffect(() => {
+    setLocalStorageItem("type-page", page);
+  }, [page]);
+
+  useEffect(() => {
+    setLocalStorageItem("type-pageSize", pageSize);
+  }, [pageSize]);
+
+  useEffect(() => {
+    setLocalStorageItem("type-is3000", is3000);
+  }, [is3000]);
+
+  useEffect(() => {
+    setLocalStorageItem("type-disabled", disabled);
+  }, [disabled]);
+
+  useEffect(() => {
+    setLocalStorageItem("type-isSettingShow", isSettingShow);
+  }, [isSettingShow]);
+
+  useEffect(() => {
+    setLocalStorageItem("type-isUKPron", isUKPron);
+  }, [isUKPron]);
+
+  // Initialize data on component mount
   useEffect(() => {
     select(levels, page, pageSize, is3000);
   }, []);
 
   const handleLevelsChange = (value: string[]) => {
-    console.log(`selected ${value}`);
-    let pageNumber = 1;
-    select(value, pageNumber, pageSize, is3000);
-    setPage(pageNumber);
     setLevels(value);
+    let page = 1;
+    select(value, page, pageSize, is3000);
+    setPage(page);
   };
 
   function nextPage() {
@@ -55,20 +119,15 @@ function Type() {
   const numberOnChange = (e: RadioChangeEvent) => {
     let value = e.target.value;
     setIs3000(value);
+
+    let page = 1;
     select(levels, page, pageSize, value);
+    setPage(page);
   };
 
   function settingClick() {
     setIsModalOpen(true);
   }
-
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
 
   function switchChange(checked: boolean) {
     setDisabled(checked);
@@ -152,8 +211,7 @@ function Type() {
       <Modal
         closable={{ "aria-label": "Custom Close Button" }}
         open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
+        footer={null}
       >
         <div className="modal">
           <div>
