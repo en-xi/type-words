@@ -19,6 +19,8 @@ interface IProps {
 }
 
 let wordIndex = 0;
+let regex = /[a-zA-Z]{1}/;
+
 const Word: FC<IProps> = ({ words, nextPage, play, isUKPron }) => {
   const [word, setWord] = useState<Word>();
   const [typedString, setTypedString] = useState("");
@@ -40,7 +42,10 @@ const Word: FC<IProps> = ({ words, nextPage, play, isUKPron }) => {
 
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
-      setTypedString((prev) => prev + e.key);
+      let key = e.key;
+      if (key.length === 1 && regex.test(key)) {
+        setTypedString((prev) => prev + key);
+      }
     }
 
     window.addEventListener("keydown", handleKeyDown);

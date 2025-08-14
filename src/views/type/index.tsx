@@ -47,7 +47,6 @@ function Type() {
   }
 
   function paginationOnChange(page: number, pageSize: number) {
-    console.log(page, pageSize);
     select(levels, page, pageSize, is3000);
     setPage(page);
     setPageSize(pageSize);
