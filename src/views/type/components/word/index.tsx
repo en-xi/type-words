@@ -1,5 +1,5 @@
 import { type Word } from "@/db";
-import { Spin } from "antd";
+import { Button, Spin } from "antd";
 import {
   memo,
   useEffect,
@@ -25,6 +25,7 @@ const Word: FC<IProps> = ({ words, nextPage, play, isUKPron }) => {
   const [word, setWord] = useState<Word>();
   const [typedString, setTypedString] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [isNextPage, setIsNextPage] = useState(false);
 
   useEffect(() => {
     if (words.length !== 0) {
@@ -64,7 +65,7 @@ const Word: FC<IProps> = ({ words, nextPage, play, isUKPron }) => {
       if (wordIndex < words.length - 1) {
         resetWord(words[++wordIndex]);
       } else {
-        nextPage();
+        setIsNextPage(true);
       }
     }
   }
@@ -75,12 +76,21 @@ const Word: FC<IProps> = ({ words, nextPage, play, isUKPron }) => {
     setTypedString("");
   }
 
+  function enterNextPage() {
+    setIsNextPage(false);
+    nextPage();
+  }
+
   if (isLoading) {
     return (
       <Spin tip="loading...">
         <div></div>
       </Spin>
     );
+  }
+
+  if (isNextPage) {
+    return <Button onClick={enterNextPage}>enter next page</Button>;
   }
 
   return (
