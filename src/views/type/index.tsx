@@ -1,4 +1,3 @@
-import "@/db/index";
 import useWordStore from "@/store";
 import { useEffect, useRef, useState } from "react";
 

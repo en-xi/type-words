@@ -32,27 +32,22 @@ db.version(2).stores({
   words: "id, level, is_3000, [level+is_3000]", // Add compound index
 });
 
-let init = async () => {
-  console.log("initDatabase()");
-  // let { default: words } = await import("@/assets/data/words.json");
-  (words as Word[]).forEach((item) => {
-    console.log("foreach()");
-    db.words.add({
-      ...item,
-    });
-  });
-};
-
 // Fix: Use async count() method instead of .length
-const initializeDatabase = async () => {
+const init = async () => {
   const count = await db.words.count();
   if (count === 0) {
-    await init();
+    console.log("initDatabase()");
+    (words as Word[]).forEach((item) => {
+      console.log("foreach()");
+      db.words.add({
+        ...item,
+      });
+    });
   }
 };
 
 // Call the initialization function
-initializeDatabase();
+await init();
 
 let select = async (
   levels: string[],
@@ -68,6 +63,7 @@ let select = async (
       .where("[level+is_3000]")
       .anyOf(compoundKeys)
       .count();
+
     let words = await db.words
       .where("[level+is_3000]")
       .anyOf(compoundKeys)
